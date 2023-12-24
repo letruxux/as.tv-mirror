@@ -16,9 +16,18 @@ HOST = "0.0.0.0"
 
 
 @app.before_request
-async def check():
+async def output():
     if request.path not in NO_LOG:
         printf(f"{colors.bold(request.remote_addr)} - {request.method} {request.path}")
+
+
+@app.after_request
+async def caching(r):
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers["Cache-Control"] = "public, max-age=0"
+    return r
 
 
 @app.route("/")
