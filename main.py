@@ -16,7 +16,7 @@ VERSION = "0.0.1"
 
 @app.before_request
 async def check():
-    if not (request.path in NO_LOG):
+    if request.path not in NO_LOG:
         printf(f"{colors.bold(request.remote_addr)} - {request.method} {request.path}")
 
 
@@ -67,9 +67,9 @@ async def api_search():
     if not query:
         return "No query provided", 400
 
-    results: list[tuple[str, str]] = await api.api_search(query)
+    results = await api.api_search(query)
 
-    if not (results):
+    if not results:
         return [], 200
 
     return jsonify(results), 200
@@ -110,4 +110,5 @@ async def on_err(e: Exception):
     printf(colors.color(str(e), colors.colors.RED))
 
 
-app.run()
+if __name__ == "__main__":
+    app.run()

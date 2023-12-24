@@ -1,7 +1,7 @@
 "use strict";
+
 document.documentElement.setAttribute("data-theme", "dark");
 
-let data;
 const banner = document.querySelector("#banner");
 const title = document.querySelector("#title");
 const episodesDiv = document.querySelector("#episodes");
@@ -9,35 +9,28 @@ const directEpisode = document.querySelector("input");
 const overDiv = document.querySelector("#over");
 
 function zip(...arrays) {
-    return arrays[0].map(function (_, i) {
-        return arrays.map(function (array) {
-            return array[i];
-        });
-    });
+    return arrays[0].map((_, i) => arrays.map((array) => array[i]));
+}
+
+async function fetchData(url) {
+    const response = await fetch(url);
+    const text = await response.text();
+    return JSON.parse(text);
 }
 
 async function getData() {
     const url = "/info?url=" + document.body.getAttribute("url");
-    const resp = await fetch(url);
-    const text = await resp.text();
-    const data = JSON.parse(text);
-    return data;
+    return fetchData(url);
 }
 
 async function getEpisodes() {
     const url = "/episodes?url=" + document.body.getAttribute("url");
-    const resp = await fetch(url);
-    const text = await resp.text();
-    const data = JSON.parse(text);
-    return data;
+    return fetchData(url);
 }
 
 async function getEpisode(epUrl) {
     const url = "/episode?url=" + epUrl;
-    const resp = await fetch(url);
-    const text = await resp.text();
-    const data = JSON.parse(text);
-    return data;
+    return fetchData(url);
 }
 
 function fadeOut() {
@@ -58,16 +51,15 @@ function fadeOut() {
     title.textContent = name;
 
     function update(specify) {
-        Array.from(episodesDiv.children).forEach((e) => e.remove());
-        for (const [ep, epUrl] of zip(episodes.episodes, episodes.links)) {
-            console.log(ep.toString(), specify);
+        episodesDiv.innerHTML = "";
+        zip(episodes.episodes, episodes.links).forEach(([ep, epUrl]) => {
             if (ep.toString().includes(specify)) {
                 const e = document.createElement("a");
                 e.setAttribute("href", "/episode?url=" + epUrl);
-                e.textContent = ep.toString();
+                e.textContent = ep;
                 episodesDiv.appendChild(e);
             }
-        }
+        });
     }
 
     update("");

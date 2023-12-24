@@ -1,27 +1,9 @@
 "use strict";
+
 document.documentElement.setAttribute("data-theme", "dark");
 const search = document.querySelector("input");
-const resultsDiv = document.querySelector("ul");
+const resultsContainer = document.querySelector("ul");
 const baseUrl = "https://www.animesaturn.tv";
-
-async function searchFuncOld(q) {
-    const f = await fetch(baseUrl + "/index.php?search=1&key=" + q, {
-        mode: "cors",
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-    if (!f.ok) {
-        throw new Error(`${f.status} ${f.statusText}`);
-    }
-    const t = await f.json();
-    let list = [];
-    t.forEach((result) => {
-        list.push([result.name, `${baseUrl}/anime/${result.link}`]);
-    });
-    return list;
-}
 
 async function searchFunc(q) {
     const f = await fetch("/search?q=" + q);
@@ -33,9 +15,10 @@ async function searchFunc(q) {
 
 search.addEventListener("change", async () => {
     try {
+        resultsContainer.style.opacity = "0";
+        Array.from(resultsContainer.children).forEach((e) => e.remove());
         const t = await searchFunc(search.value);
-        resultsDiv.style.opacity = 1;
-        Array.from(resultsDiv.children).forEach((e) => e.remove());
+        resultsContainer.style.opacity = "1";
         t.forEach((e) => {
             const element = document.createElement("div");
             element.className = "result";
@@ -46,7 +29,7 @@ search.addEventListener("change", async () => {
             const img = document.createElement("h5");
             img.textContent = e[0];
             element.appendChild(img);
-            resultsDiv.appendChild(element);
+            resultsContainer.appendChild(element);
         });
     } catch (error) {
         console.log(error);
