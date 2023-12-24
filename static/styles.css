@@ -62,11 +62,17 @@ header {
     background: none;
     position: fixed;
     z-index: 999;
-    text-shadow: 2px 2px black;
+    pointer-events: none;
 }
 
 header > * {
     cursor: pointer;
+    text-shadow: 3px 3px black;
+    transition: transform 0.25s ease-in-out;
+    pointer-events: all;
+}
+header > *:hover {
+    transform: scale(110%);
 }
 
 header > *:not(:last-child) {
@@ -87,6 +93,11 @@ header > *:not(:last-child) {
     margin: 0;
     margin-right: 6px;
     top: 5px;
+    transition: transform 0.15s ease-in-out;
+}
+
+.icon:hover {
+    transform: scale(120%);
 }
 
 .siteIcon {
@@ -128,19 +139,6 @@ header > *:not(:last-child) {
     margin-bottom: 15px;
 }
 
-#cover,
-#tags {
-    display: none;
-}
-
-#tags > * {
-    background-color: var(--accent);
-    border-radius: 10px;
-    padding: 10px;
-    width: fit-content;
-    box-shadow: 2px px 5px lightblue;
-}
-
 #episodes,
 input,
 ul {
@@ -151,6 +149,8 @@ ul {
     padding: 15px;
     border-radius: 15px;
     clear: both;
+    text-align: left;
+    font-size: large;
 }
 
 #episodes {
@@ -159,14 +159,13 @@ ul {
     overflow-x: auto;
     opacity: 0;
     transition: opacity 0.1s ease-in-out;
-    text-align: center;
-    font-weight: 800;
-    font-size: large;
+    font-weight: 700;
 }
 
 ul {
     opacity: 0;
     transition: opacity 0.15s ease-in-out;
+    font-weight: 700;
 }
 
 input {

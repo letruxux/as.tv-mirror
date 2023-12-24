@@ -16,21 +16,26 @@ async function searchFunc(q) {
 search.addEventListener("change", async () => {
     try {
         resultsContainer.style.opacity = "0";
-        Array.from(resultsContainer.children).forEach((e) => e.remove());
+        resultsContainer.innerHTML = "";
         const t = await searchFunc(search.value);
-        resultsContainer.style.opacity = "1";
-        t.forEach((e) => {
-            const element = document.createElement("div");
-            element.className = "result";
-            element.setAttribute(
-                "onclick",
-                "location.href = '/anime?url=" + e[1] + "'"
-            );
-            const img = document.createElement("h5");
-            img.textContent = e[0];
-            element.appendChild(img);
-            resultsContainer.appendChild(element);
-        });
+        if (t.length > 0) {
+            t.forEach((e) => {
+                const element = document.createElement("div");
+                element.className = "result";
+                element.setAttribute(
+                    "onclick",
+                    "location.href = '/anime?url=" + e[1] + "'"
+                );
+                const img = document.createElement("h5");
+                img.textContent = e[0];
+                element.appendChild(img);
+                resultsContainer.appendChild(element);
+            });
+            resultsContainer.style.opacity = "1";
+        } else {
+            resultsContainer.style.opacity = "1";
+            resultsContainer.innerHTML = "No results";
+        }
     } catch (error) {
         console.log(error);
     }

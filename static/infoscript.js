@@ -60,14 +60,18 @@ function fadeOut() {
 
     function update(specify) {
         episodesDiv.innerHTML = "";
-        zip(episodes.episodes, episodes.links).forEach(([ep, epUrl]) => {
-            if (ep.toString().includes(specify)) {
-                const e = document.createElement("a");
-                e.setAttribute("href", "/episode?url=" + epUrl);
-                e.textContent = ep;
-                episodesDiv.appendChild(e);
-            }
-        });
+        if (episodes.links.length > 0) {
+            zip(episodes.episodes, episodes.links).forEach(([ep, epUrl]) => {
+                if (ep.toString().includes(specify)) {
+                    const e = document.createElement("a");
+                    e.setAttribute("href", "/episode?url=" + epUrl);
+                    e.textContent = ep;
+                    episodesDiv.appendChild(e);
+                }
+            });
+        } else {
+            episodesDiv.innerHTML = "No episodes";
+        }
     }
 
     update("");
