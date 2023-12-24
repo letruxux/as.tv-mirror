@@ -124,7 +124,6 @@ header > *:not(:last-child) {
     width: 100%;
     height: 209px;
     mask-image: none;
-    margin-top: 15px;
     -webkit-mask-image: -webkit-gradient(
         linear,
         left top,
@@ -207,4 +206,16 @@ input {
 
 .result > * {
     text-align: left;
+}
+
+footer {
+    position: fixed;
+    transform-origin: bottom;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0.75em;
+
+    font-size: 2em;
+    cursor: pointer;
+    text-shadow: 3px 3px black;
 }

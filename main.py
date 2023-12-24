@@ -121,4 +121,4 @@ async def on_err(e: Exception):
 
 
 if __name__ == "__main__":
-    app.run(HOST)
+    app.run(HOST, debug=True)
