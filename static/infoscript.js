@@ -44,6 +44,11 @@ function fadeOut() {
     const data = await getData();
     banner.setAttribute("src", data.banner_url);
 
+    document.title = data.title;
+    title.textContent = data.title;
+
+    fadeOut();
+
     const episodes = await getEpisodes();
     const name = `${data.title} (${episodes.episodes.length})`;
 
@@ -60,6 +65,7 @@ function fadeOut() {
                 episodesDiv.appendChild(e);
             }
         });
+        episodesDiv.style.opacity = "1";
     }
 
     update("");
@@ -67,6 +73,4 @@ function fadeOut() {
     directEpisode.addEventListener("input", () => {
         update(directEpisode.value);
     });
-
-    fadeOut();
 })();
