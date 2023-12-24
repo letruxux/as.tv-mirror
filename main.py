@@ -12,6 +12,7 @@ app = Quart(__name__)
 
 NO_LOG = ["/u"]
 VERSION = "0.0.1"
+HOST = "0.0.0.0"
 
 
 @app.before_request
@@ -111,4 +112,4 @@ async def on_err(e: Exception):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(HOST)
