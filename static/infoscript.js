@@ -47,6 +47,9 @@ function fadeOut() {
     document.title = data.title;
     title.textContent = data.title;
 
+    episodesDiv.style.opacity = "1";
+    episodesDiv.innerHTML = "Loading episodes...";
+
     fadeOut();
 
     const episodes = await getEpisodes();
@@ -65,7 +68,6 @@ function fadeOut() {
                 episodesDiv.appendChild(e);
             }
         });
-        episodesDiv.style.opacity = "1";
     }
 
     update("");
