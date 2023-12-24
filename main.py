@@ -1,19 +1,23 @@
 from quart import Quart, request, render_template, redirect, send_file
 from json import dumps as jsonify
-import api
+import as_api as api
 import logging
 
-from loggings.log import printf
-from loggings import colors
+from console_utils.log import printf
+from console_utils import colors
 
 logging.getLogger("hypercorn.access").disabled = True
 
 app = Quart(__name__)
 
+NO_LOG = ["/u"]
+VERSION = "0.0.1"
+
 
 @app.before_request
 async def check():
-    printf(f"{colors.bold(request.remote_addr)} - {request.method} {request.path}")
+    if not (request.path in NO_LOG):
+        printf(f"{colors.bold(request.remote_addr)} - {request.method} {request.path}")
 
 
 @app.route("/")
@@ -63,7 +67,7 @@ async def api_search():
     if not query:
         return "No query provided", 400
 
-    results: list[tuple[str, str]] = await api.search_anime(query)
+    results: list[tuple[str, str]] = await api.api_search(query)
 
     if not (results):
         return [], 200
@@ -77,7 +81,7 @@ async def api_episode():
     if not url:
         return "No AnimeSaturn URL provided", 400
 
-    player, playlist = await api.get_download_link(url)
+    player, _ = await api.get_download_link(url)
 
     if not player:
         return "Invalid AnimeSaturn URL or no episodes", 400
@@ -90,4 +94,20 @@ async def favicon():
     return await send_file("static/favicon.ico")
 
 
-app.run(debug=False)
+# for uptimerobot replit keep alive
+@app.route("/u")
+async def blank():
+    return "", 200
+
+
+@app.errorhandler(404)
+async def redirect_404(e):
+    return redirect("/")
+
+
+@app.errorhandler(Exception)
+async def on_err(e: Exception):
+    printf(colors.color(str(e), colors.colors.RED))
+
+
+app.run()

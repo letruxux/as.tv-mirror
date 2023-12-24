@@ -70,10 +70,9 @@ small {
 }
 
 header {
-    width: (100%);
-    height: 50px;
+    width: calc(100% - 15px - 5px);
+    height: 30px;
     background-color: var(--secondary);
-    margin-bottom: 15px;
     padding: 10px;
     display: block;
     border-radius: 10px;
@@ -81,8 +80,28 @@ header {
 
 header > * {
     position: absolute;
-    top: 50em;
+    top: 49.75em;
     margin-left: 7.5px;
     transform: translate(0, -49em);
     cursor: pointer;
+}
+
+.siteTitle {
+    margin: 0;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.icon {
+    width: auto;
+    position: relative;
+    height: 36px;
+    margin: 0;
+    margin-right: 6px;
+    top: 5px;
+}
+
+.siteIcon {
+    content: url("/static/favicon.png");
 }
